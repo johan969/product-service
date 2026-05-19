@@ -1,4 +1,11 @@
 package se.iths.johan.productservice.dto;
 
-public record ProductRequestDto() {
+public record ProductRequestDto(
+        String name,
+        String description,
+        double price,
+        int stock
+) {
+
+
 }
