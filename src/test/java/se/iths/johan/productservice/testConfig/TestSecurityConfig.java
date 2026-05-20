@@ -1,4 +1,4 @@
-package se.iths.johan.productservice.config;
+package se.iths.johan.productservice.testConfig;
 
 
 import org.springframework.boot.test.context.TestConfiguration;
