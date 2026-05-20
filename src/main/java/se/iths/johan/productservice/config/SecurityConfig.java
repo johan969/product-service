@@ -33,6 +33,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/products/**", "/products").permitAll() // Denna rad ska bord vi deployment
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
@@ -62,7 +63,7 @@ public class SecurityConfig {
         return converter;
     }
 
-    // JwtDecoder används för att läsa våran jwt token, den gör detta genom att hämta den public nyckeln via "auth/jwks". (Finns i AuthController i vårt huvud projekt)
+     //JwtDecoder används för att läsa våran jwt token, den gör detta genom att hämta den public nyckeln via "auth/jwks". (Finns i AuthController i vårt huvud projekt)
     @Bean
     public JwtDecoder jwtDecoder(@Value("${app.auth-server-url}") String authServerUrl) {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
