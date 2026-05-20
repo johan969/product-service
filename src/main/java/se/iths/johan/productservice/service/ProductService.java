@@ -3,6 +3,7 @@ package se.iths.johan.productservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.iths.johan.productservice.dto.ProductRequestDto;
+import se.iths.johan.productservice.dto.ProductResponseDto;
 import se.iths.johan.productservice.mapper.ProductMapper;
 import se.iths.johan.productservice.model.Product;
 import se.iths.johan.productservice.repository.ProductRepository;
@@ -18,17 +19,20 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<ProductResponseDto> findAll() {
+        List <Product> products = productRepository.findAll();
+        return products.stream().map(productMapper::toDto).toList();
     }
 
-    public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductResponseDto> findById(Long id) {
+        return productRepository.findById(id)
+                .map(productMapper::toDto);
     }
 
-    public Product create(ProductRequestDto requestDto) {
+    public ProductResponseDto create(ProductRequestDto requestDto) {
         Product product = productMapper.toEntity(requestDto);
-       return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.toDto(savedProduct);
 
     }
 
