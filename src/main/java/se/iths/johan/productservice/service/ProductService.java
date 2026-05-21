@@ -29,7 +29,7 @@ public class ProductService {
 
     public Optional<ProductResponseDto> findById(Long id) {
         return productRepository.findById(id)
-                .map(productMapper::toDto);
+                .map(product ->  productMapper.toDto(product));
     }
 
     public ProductResponseDto create(ProductRequestDto requestDto) {
