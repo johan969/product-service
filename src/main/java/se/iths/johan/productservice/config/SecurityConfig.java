@@ -33,7 +33,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/products/**", "/products").permitAll() // Denna rad ska bord vi deployment
+//                        .requestMatchers("/products/**", "/products").permitAll() // Denna rad ska bord vi deployment
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
