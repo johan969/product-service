@@ -44,7 +44,7 @@ public class ProductController {
 
 
     // Skickar tillbaka en lista med ProductResponseDto, tar emot en lista med ProductOrderRequestDto från order-service
-    @PostMapping("/stock")
+    @PostMapping("/stock/decrease")
     public ResponseEntity<List<ProductResponseDto>> decreaseStock(@RequestBody List<ProductOrderRequestDto> requestStock) {
 
         // Skickar vår ProductResponseDto lista till productService som ger oss en updaterad ProductResponseDto lista
