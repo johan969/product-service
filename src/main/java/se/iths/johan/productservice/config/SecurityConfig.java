@@ -67,7 +67,7 @@ public class SecurityConfig {
     @Bean
     public JwtDecoder jwtDecoder(@Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}") String authServerUrl) {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
-                .withJwkSetUri(authServerUrl + "/auth/jwks")
+                .withJwkSetUri(authServerUrl)
                 .build();
         jwtDecoder.setJwtValidator(
                 JwtValidators.createDefaultWithIssuer(authServerUrl));
