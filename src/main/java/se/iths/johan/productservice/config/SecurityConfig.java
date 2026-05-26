@@ -64,10 +64,10 @@ public class SecurityConfig {
     }
 
      //JwtDecoder används för att läsa våran jwt token, den gör detta genom att hämta den public nyckeln via "auth/jwks". (Finns i AuthController i vårt huvud projekt)
-    @Bean
-    public JwtDecoder jwtDecoder(@Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}") String authServerUrl) {
+   @Bean
+    public JwtDecoder jwtDecoder(@Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}") String authServerUrl) {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder
-                .withJwkSetUri(authServerUrl)
+                .withJwkSetUri(authServerUrl + "/auth/jwks")
                 .build();
         jwtDecoder.setJwtValidator(
                 JwtValidators.createDefaultWithIssuer(authServerUrl));
