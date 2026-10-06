@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -17,10 +17,10 @@ import se.iths.johan.productservice.service.ProductService;
 
 import java.math.BigDecimal;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,62 +41,64 @@ public class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        ProductRequestDto productRequestDto = new ProductRequestDto("johan","beskrivning",new BigDecimal("100.00"),5);
+        ProductRequestDto productRequestDto = new ProductRequestDto("johan", "beskrivning", new BigDecimal("100.00"), 5, "kategori", "bildlänk");
         productService.create(productRequestDto);
 
     }
 
     @Test
-    void findAllTest() throws Exception{
-    mockMvc.perform(get("/products")
-            .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_USER"))))
-            .andExpect(status().isOk());
+    void findAllTest() throws Exception {
+        mockMvc.perform(get("/products")
+                        .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_USER"))))
+                .andExpect(status().isOk());
     }
+
     @Test
-    void unauthorizedFindAllTest() throws Exception{
+    void unauthorizedFindAllTest() throws Exception {
         mockMvc.perform(get("/products"))
                 .andExpect(status().isUnauthorized());
     }
 
 
     @Test
-    void findByIdTest() throws Exception{
-        mockMvc.perform(get("/products/{id}",1)
+    void findByIdTest() throws Exception {
+        mockMvc.perform(get("/products/{id}", 1)
                         .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_USER"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("johan"));
 
     }
+
     @Test
-    void unauthorizedFindByIdTest() throws Exception{
-        mockMvc.perform(get("/products/{id}",1))
+    void unauthorizedFindByIdTest() throws Exception {
+        mockMvc.perform(get("/products/{id}", 1))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
-    void createTest() throws Exception{
+    void createTest() throws Exception {
         ProductRequestDto productRequestDto = new ProductRequestDto(
                 "frank",
                 "annan beskrivning",
                 new BigDecimal("100.00"),
-                5);
+                5, "Kategori", "bildlänk");
 
         mockMvc.perform(post("/products")
                         .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(productRequestDto)))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.name").value("frank"));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productRequestDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("frank"));
 
     }
 
     @Test
-    void forbiddenCreateTest() throws Exception{
+    void forbiddenCreateTest() throws Exception {
         ProductRequestDto productRequestDto = new ProductRequestDto(
                 "frank",
                 "annan beskrivning",
                 new BigDecimal("100.00"),
-                5);
+                5, "kategori", "bildlänk");
 
 
         mockMvc.perform(post("/products")
@@ -107,12 +109,12 @@ public class ProductControllerTest {
     }
 
     @Test
-    void unauthorizedCreateTest() throws Exception{
+    void unauthorizedCreateTest() throws Exception {
         ProductRequestDto productRequestDto = new ProductRequestDto(
                 "frank",
                 "annan beskrivning",
                 new BigDecimal("100.00"),
-                5);
+                5, "kategori", "bildlänk");
 
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -122,23 +124,24 @@ public class ProductControllerTest {
 
 
     @Test
-    void deleteTest() throws Exception{
-        mockMvc.perform(delete("/products/{id}",1)
-                .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
+    void deleteTest() throws Exception {
+        mockMvc.perform(delete("/products/{id}", 1)
+                        .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
                 .andExpect(status().isNoContent());
 
 
     }
 
     @Test
-    void forbiddenDeleteTest()  throws Exception{
-        mockMvc.perform(delete("/products/{id}",1)
+    void forbiddenDeleteTest() throws Exception {
+        mockMvc.perform(delete("/products/{id}", 1)
                         .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_USER"))))
                 .andExpect(status().isForbidden());
     }
+
     @Test
-    void unauthorizedDeleteTest() throws Exception{
-        mockMvc.perform(delete("/products/{id}",1))
+    void unauthorizedDeleteTest() throws Exception {
+        mockMvc.perform(delete("/products/{id}", 1))
                 .andExpect(status().isUnauthorized());
 
     }
