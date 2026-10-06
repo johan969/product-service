@@ -1,9 +1,11 @@
 package se.iths.johan.productservice.config;
 
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,6 +16,9 @@ import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -26,6 +31,10 @@ public class SecurityConfig {
             HttpSecurity http,
             JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
         http
+
+                .cors(Customizer.withDefaults())
+
+
                 //Stänger av csrf
         .csrf(csrf -> csrf.disable())
                 //Vi stänger av session, vi sparar inga cookies
@@ -44,6 +53,34 @@ public class SecurityConfig {
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
         return http.build();
+    }
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+
+        //instansiera en ny CorsConfiguration
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        //Vilka HTTP länker den får tillgång till som får göras
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        //Vilka anrop som får göras
+        corsConfiguration.setAllowedMethods(List.of("GET","POST","DELETE","OPTIONS"));
+
+        // Authorization är för att vi skcikar med en JWT token
+        //Content-Type är för att vi skickar data i POST metoder
+        // Accept är för att vi skickar DTO'er med json format
+        corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+
+
+        //instansiera en ny UrlBasedCorsConfigurationSource
+        UrlBasedCorsConfigurationSource urlSource = new UrlBasedCorsConfigurationSource();
+
+        //detta är så att CORS reglerna är aktiva på alla endpoints
+        // pattern "/**" ger tillgång till alla sökvägar
+        urlSource.registerCorsConfiguration("/**", corsConfiguration);
+
+        return urlSource;
     }
 
 
