@@ -6,7 +6,9 @@ public record ProductRequestDto(
         String name,
         String description,
         BigDecimal price,
-        int stock
+        int stock,
+        String category,
+        String imageUrl
 ) {
 
 
