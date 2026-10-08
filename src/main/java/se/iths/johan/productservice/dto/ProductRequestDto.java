@@ -1,5 +1,7 @@
 package se.iths.johan.productservice.dto;
 
+import se.iths.johan.productservice.model.Category;
+
 import java.math.BigDecimal;
 
 public record ProductRequestDto(
@@ -7,8 +9,9 @@ public record ProductRequestDto(
         String description,
         BigDecimal price,
         int stock,
-        String category,
-        String imageUrl
+        String imageUrl,
+        Category category
+
 ) {
 
 

@@ -62,7 +62,8 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         //Vilka HTTP länker den får tillgång till som får göras
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedOrigins(List.of(
+                "http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176"));
 
         //Vilka anrop som får göras
         corsConfiguration.setAllowedMethods(List.of("GET","POST","DELETE","OPTIONS"));

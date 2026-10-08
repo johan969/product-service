@@ -2,6 +2,8 @@ package se.iths.johan.productservice.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import se.iths.johan.productservice.dto.ProductRequestDto;
+import se.iths.johan.productservice.model.Category;
 import se.iths.johan.productservice.service.ProductService;
 
 import java.math.BigDecimal;
@@ -41,7 +44,12 @@ public class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        ProductRequestDto productRequestDto = new ProductRequestDto("johan", "beskrivning", new BigDecimal("100.00"), 5, "kategori", "bildlänk");
+        ProductRequestDto productRequestDto = new ProductRequestDto("johan",
+                "beskrivning",
+                new BigDecimal("100.00"),
+                5,
+                "imageurl",
+                Category.TV);
         productService.create(productRequestDto);
 
     }
@@ -81,7 +89,10 @@ public class ProductControllerTest {
                 "frank",
                 "annan beskrivning",
                 new BigDecimal("100.00"),
-                5, "Kategori", "bildlänk");
+                5,
+                "imageurl",
+                Category.TV
+                );
 
         mockMvc.perform(post("/products")
                         .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN")))
@@ -98,7 +109,9 @@ public class ProductControllerTest {
                 "frank",
                 "annan beskrivning",
                 new BigDecimal("100.00"),
-                5, "kategori", "bildlänk");
+                5,
+                "imageurl",
+                Category.TV);
 
 
         mockMvc.perform(post("/products")
@@ -114,7 +127,9 @@ public class ProductControllerTest {
                 "frank",
                 "annan beskrivning",
                 new BigDecimal("100.00"),
-                5, "kategori", "bildlänk");
+                5,
+                "imageurl",
+                Category.TV);
 
         mockMvc.perform(post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
