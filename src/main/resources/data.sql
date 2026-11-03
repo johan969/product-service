@@ -1,6 +1,6 @@
 INSERT INTO products (name, description, price, stock,image_url, category)
 VALUES
-    ('MacBook Pro 16"', 'M3 Max chip, 36GB RAM, 1TB SSD', 39990.00, 10, 'https://example.com/macbook16.jpg', 'COMPUTERS'),
+    ('MacBook Pro 16"', 'M3 Max chip, 36GB RAM, 1TB SSD', 39990.00, 10, 'https://images.unsplash.com/photo-1778157772414-427d5604a8d6?q=80&w=1180&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D', 'COMPUTERS'),
     ('ASUS ROG Zephyrus G16', 'Intel i9, RTX 4080, 32GB RAM, 240Hz OLED', 32990.00, 5, 'https://example.com/zephyrus.jpg', 'COMPUTERS'),
     ('Lenovo ThinkPad X1 Carbon', 'Intel Ultra 7, 16GB RAM, 512GB SSD', 21490.00, 12, 'https://example.com/thinkpad.jpg', 'COMPUTERS'),
 
